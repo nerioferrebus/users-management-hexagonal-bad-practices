@@ -48,8 +48,7 @@ public final class LoginService implements LoginUseCase {
       throw InvalidCredentialsException.becauseCredentialsAreInvalid();
     }
 
-    // Clean Code - Regla 14: acceso profundo a internals del value object.
-    if (!user.getPassword().verifyPlain(plainPassword)) {
+    if (!user.passwordMatches(plainPassword)) {
       throw InvalidCredentialsException.becauseCredentialsAreInvalid();
     }
 
