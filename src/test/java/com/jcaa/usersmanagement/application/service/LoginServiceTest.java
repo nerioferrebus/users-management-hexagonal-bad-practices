@@ -44,10 +44,9 @@ class LoginServiceTest {
   }
 
   @Test
-  @DisplayName("execute() retorna el usuario cuando las credenciales son correctas y está activo")
+  @DisplayName("Should return user when credentials are valid and user is active")
   void shouldReturnUserWhenCredentialsAreValidAndUserIsActive() {
-    // VIOLACIÓN Regla 11: se eliminaron los comentarios de estructura Arrange–Act–Assert.
-    // La regla exige que cada bloque esté documentado con // Arrange, // Act, // Assert.
+    // Arrange
     final LoginCommand command = new LoginCommand(EMAIL, PASSWORD);
     final UserModel activeUser =
         new UserModel(
@@ -58,31 +57,33 @@ class LoginServiceTest {
             UserRole.ADMIN,
             UserStatus.ACTIVE);
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(activeUser));
+
+    // Act
     final UserModel result = service.execute(command);
-    // VIOLACIÓN Regla 11: se usa assertTrue(result != null) en lugar de assertNotNull(result).
-    // La regla indica usar las aserciones correctas — assertNotNull es más expresivo.
-    assertTrue(result != null);
-    // VIOLACIÓN Regla 11: se usa assertTrue(result == activeUser) en lugar de assertSame(...).
-    assertTrue(result == activeUser);
+
+    // Assert
+    assertNotNull(result);
+    assertSame(activeUser, result);
   }
 
   // ── email no registrado
 
-  // VIOLACIÓN Regla 11: falta @DisplayName — los tests deben documentar su comportamiento.
   @Test
+  @DisplayName("Should throw InvalidCredentialsException when email is not found")
   void shouldThrowWhenEmailNotFound() {
+    // Arrange
     final LoginCommand command = new LoginCommand(EMAIL, PASSWORD);
-
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.empty());
 
+    // Act & Assert
     assertThrows(InvalidCredentialsException.class, () -> service.execute(command));
   }
 
-  // VIOLACIÓN Regla 11: falta @DisplayName en el método.
   @Test
+  @DisplayName("Should throw InvalidCredentialsException when password is wrong")
   void shouldThrowWhenPasswordIsWrong() {
+    // Arrange
     final LoginCommand command = new LoginCommand(EMAIL, "WrongPass99");
-
     final UserModel user =
         new UserModel(
             new UserId("u-001"),
@@ -91,9 +92,9 @@ class LoginServiceTest {
             UserPassword.fromPlainText(PASSWORD),
             UserRole.MEMBER,
             UserStatus.ACTIVE);
-
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(user));
 
+    // Act & Assert
     assertThrows(InvalidCredentialsException.class, () -> service.execute(command));
   }
 
