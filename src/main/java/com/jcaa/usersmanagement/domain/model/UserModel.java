@@ -44,4 +44,28 @@ public class UserModel {
     return this.status == UserStatus.ACTIVE;
   }
 
+  public String getIdValue() {
+    return id.value();
+  }
+
+  public String getNameValue() {
+    return name.value();
+  }
+
+  public String getEmailValue() {
+    return email.value();
+  }
+
+  public String getPasswordValue() {
+    return password.value();
+  }
+
+  public String getRoleName() {
+    return role.name();
+  }
+
+  public String getStatusName() {
+    return status.name();
+  }
+
 }
