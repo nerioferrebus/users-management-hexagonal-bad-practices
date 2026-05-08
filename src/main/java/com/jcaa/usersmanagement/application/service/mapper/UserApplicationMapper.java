@@ -42,10 +42,6 @@ public class UserApplicationMapper {
 
     final String userEmail = command.email();
 
-    // EFECTO CASCADA de la Regla 15 en UserModel:
-    // Al usar @Data en vez de @Value, el modelo es mutable. El siguiente llamador
-    // podría hacer userToUpdate.setStatus(BLOCKED) en cualquier momento después
-    // de construirlo, sin pasar por ninguna regla de dominio.
     return new UserModel(
         new UserId(command.id()),
         new UserName(command.name()),
