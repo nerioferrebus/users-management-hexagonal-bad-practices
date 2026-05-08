@@ -11,13 +11,11 @@ import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.dto.LoginReque
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.dto.UpdateUserRequest;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.dto.UserResponse;
 
+import lombok.experimental.UtilityClass;
 import java.util.List;
 
+@UtilityClass
 public final class UserDesktopMapper {
-
-  private UserDesktopMapper() {
-    // clase utilitaria: no se permite instanciar
-  }
 
   // Regla 4 (Clean Code): los métodos públicos van primero; el auxiliar privado
   // aparece al final, cerca del método público que lo invoca.
@@ -52,11 +50,11 @@ public final class UserDesktopMapper {
 
   public static UserResponse toResponse(final UserModel user) {
     return new UserResponse(
-        user.getId().value(),
-        user.getName().value(),
-        user.getEmail().value(),
-        user.getRole().name(),
-        user.getStatus().name());
+        user.getIdValue(),
+        user.getNameValue(),
+        user.getEmailValue(),
+        user.getRoleName(),
+        user.getStatusName());
   }
 
   public static List<UserResponse> toResponseList(final List<UserModel> users) {
