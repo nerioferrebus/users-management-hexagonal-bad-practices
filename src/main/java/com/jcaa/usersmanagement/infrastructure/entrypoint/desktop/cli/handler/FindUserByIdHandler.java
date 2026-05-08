@@ -18,7 +18,7 @@ public final class FindUserByIdHandler implements OperationHandler {
   public void handle() {
     final String id = console.readRequired("User ID: ");
     try {
-      final UserResponse user = userController.findUserById(id);
+      final UserResponse user = userController.findUserById(new com.jcaa.usersmanagement.domain.valueobject.UserId(id));
       printer.print(user);
     } catch (final UserNotFoundException exception) {
       console.println("  Not found: " + exception.getMessage());
