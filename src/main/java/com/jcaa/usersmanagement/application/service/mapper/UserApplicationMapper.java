@@ -59,16 +59,9 @@ public class UserApplicationMapper {
     return new UserId(command.id());
   }
 
-  // Clean Code - Regla 21 (no retornar banderas de error):
-  // Este método retorna 1, 2, 3 o -1 como códigos de resultado para representar roles.
-  // La regla dice: no usar valores especiales (-1, null, "ERROR", false) para señalar errores.
-  // El contrato de salida NO diferencia ausencia, falla y éxito:
-  //   - ¿Qué significa -1? ¿Error de parseo? ¿Rol desconocido? ¿No autorizado?
-  //   - El llamador DEBE recordar qué valor representa cada caso — frágil y opaco.
-  // Solución: lanzar IllegalArgumentException o usar Optional<Integer> con semántica clara.
   public static int roleToCode(final String role) {
     if (Objects.isNull(role) || role.isBlank()) {
-      return -1;
+      throw new IllegalArgumentException("Role must not be null or blank");
     }
     if ("ADMIN".equalsIgnoreCase(role)) {
       return 1;
@@ -77,6 +70,6 @@ public class UserApplicationMapper {
     } else if ("REVIEWER".equalsIgnoreCase(role)) {
       return 3;
     }
-    return -1;
+    throw new IllegalArgumentException("Unknown role: " + role);
   }
 }
