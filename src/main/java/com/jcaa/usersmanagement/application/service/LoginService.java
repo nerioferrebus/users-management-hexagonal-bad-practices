@@ -52,17 +52,7 @@ public final class LoginService implements LoginUseCase {
       throw InvalidCredentialsException.becauseCredentialsAreInvalid();
     }
 
-    // Clean Code - Regla 12 (alta cohesión): lógica de dominio sobre estados válidos
-    // dispersa en la capa de aplicación — debería encapsularse en UserModel o un servicio de dominio.
-    // Clean Code - Regla 17: condición booleana compleja y difícil de leer.
-    // La regla dice: extraer condiciones complejas a métodos con nombre significativo.
-    // Esta expresión equivale a "user.getStatus() != ACTIVE" pero está escrita de forma
-    // redundante e innecesariamente larga — el lector debe analizar cada rama para
-    // deducir la intención central. Debería ser: if (!user.isAllowedToLogin()).
-    if (user.getStatus() != UserStatus.ACTIVE
-        || user.getStatus() == UserStatus.BLOCKED
-        || user.getStatus() == UserStatus.INACTIVE
-        || user.getStatus() == UserStatus.PENDING) {
+    if (!user.isAllowedToLogin()) {
       throw InvalidCredentialsException.becauseUserIsNotActive();
     }
 
